@@ -1,0 +1,11 @@
+{
+    "server_logs": {
+        "server_user": null,
+        "server_pass": null,
+        "server_host": null
+    },
+    "server_status": {
+        "server_conn": null,
+        "server_db_name": null
+    }
+}
