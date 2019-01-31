@@ -58,13 +58,13 @@ class MenuBar():
             f_view="home"
         )
 
-    def display_parameters(self):
-        """ Display "parameters" view. """
+    def display_settings(self):
+        """ Display "Settings" view. """
 
         self.previous_view = self.displayer.current_view
         self.displayer.display(
             c_view=self.previous_view,
-            f_view="parameters"
+            f_view="settings"
         )
 
     def display_welcome(self):
@@ -220,8 +220,8 @@ class MenuBar():
                 command=self.display_home
             )
             main_menu.add_command(
-                label=txt.get("parameters"),
-                command=self.display_parameters
+                label=txt.get("settings"),
+                command=self.display_settings
             )
             main_menu.add_command(
                 label=txt.get("sign_out"),

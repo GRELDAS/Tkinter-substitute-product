@@ -81,7 +81,7 @@ class UserProfil():
         self.w_delete_title = None
         self.w_delete_button = None
         # Widgets row 4
-        self.w_previous_button = None
+        self.w_home_button = None
         self.w_submit_button = None
 
         # Fill status
@@ -170,12 +170,12 @@ class UserProfil():
         self.row_4(action="fill")
         self.fill_status = True
 
-    def display_previous(self):
-        """ Display previous view. """
+    def display_home(self):
+        """ Display "home" view. """
 
         self.displayer.display(
             c_view="user_profil",
-            f_view=self.previous_view
+            f_view="home"
         )
 
     def display_avatars(self):
@@ -620,18 +620,18 @@ class UserProfil():
 
             # -- COLUMN 1/4 : EMPTY -- #
             # -- COLUMN 2/4 : SUBMIT BUTTON -- #
-            if self.w_previous_button is None:
+            if self.w_home_button is None:
 
-                self.w_previous_button = Button(
+                self.w_home_button = Button(
                     self.grid.col_frames[4][1],
-                    text=txt.get("previous_button"),
+                    text=txt.get("home_button"),
                     fg="#ffffff",
                     bg="#7A57EC",
                     activeforeground="#ffffff",
                     activebackground="#845EFF",
-                    command=self.display_previous
+                    command=self.display_home
                 )
-                self.w_previous_button.pack(side=BOTTOM, fill=X)
+                self.w_home_button.pack(side=BOTTOM, fill=X)
 
             # -- COLUMN 3/4 : SUBMIT BUTTON -- #
             if self.w_submit_button is None:
@@ -651,8 +651,8 @@ class UserProfil():
         elif action == "refresh":
             """ Refresh this row. """
 
-            self.w_previous_button.pack_forget()
+            self.w_home_button.pack_forget()
             self.w_submit_button.pack_forget()
 
-            self.w_previous_button = None
+            self.w_home_button = None
             self.w_submit_button = None

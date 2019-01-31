@@ -20,10 +20,10 @@ class UserAvatars():
         displayer=None,
         session=None
     ):
-        """ 'container'     (Obj  ): instance of Container.
+        """ 'container'     (obj  ): instance of Container.
             'displayer'     (obj  ): instance of Displayer.
             'session,'      (obj  ): instance of Session.
-            'grid'          (Obj  ): instance of Grid.
+            'grid'          (obj  ): instance of Grid.
 
             'f_container'   (Frame): container frame.
             'm_frame'       (Frame): master frame of view.

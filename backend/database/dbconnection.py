@@ -36,6 +36,8 @@ class DbConnection():
         self.server_db_name = None
         self.server_conn = 0
 
+        self.engine_default = None
+
         self.json_file(action="load")
 
     def json_file(self, action=None):
@@ -136,6 +138,7 @@ class DbConnection():
                                 s_user, s_pass, s_host
                             )
                         )
+                    self.engine_default = self.engine
                     self.engine.connect()
                     self.engine.execute(
                         "CREATE DATABASE IF NOT EXISTS purbeurre"

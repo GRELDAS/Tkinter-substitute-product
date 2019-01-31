@@ -22,7 +22,6 @@
     },
 
     "row_7":{
-        "previous_button": "Previous",
         "submit_button" : "New research"
     }
 }

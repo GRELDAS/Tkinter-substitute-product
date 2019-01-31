@@ -180,6 +180,11 @@ class UserForm():
             f_view="user_welcome"
         )
 
+        self.user = None
+        self.user_name = None
+        self.user_avatar_name = "empty"
+        self.w_name_entry.delete(0, 1000)
+
     def row_0(self, action=None):
         """ Name : TITLE
             cols : 1 """

@@ -71,8 +71,8 @@ class Home():
         self.w_favorite_label = None
         self.w_favorite_button = None
         # Widgets row 3
-        self.w_update_label = None
-        self.w_update_button = None
+        self.w_settings_label = None
+        self.w_settings_button = None
         # Widgets row 4
         self.w_user_label = None
         self.w_user_button = None
@@ -166,13 +166,13 @@ class Home():
             f_view="product_favorite"
         )
 
-    def display_update(self):
-        """ Display view "update".
-            Package "UPDATE". """
+    def display_settings(self):
+        """ Display view "settings".
+            Package "OTHERS". """
 
         self.displayer.display(
             c_view="home",
-            f_view="update"
+            f_view="settings"
         )
 
     def display_user_profil(self):
@@ -427,7 +427,6 @@ class Home():
                 self.w_favorite_button.pack(fill="x", expand=True)
 
         elif action == "refresh":
-            """ Refresh this row. """
 
             self.w_favorite_label.pack_forget()
             self.w_favorite_button.pack_forget()
@@ -492,22 +491,22 @@ class Home():
             # Get texts for this row
             txt = self.json_script.get("row_3")
 
-            if self.w_update_label is None:
-                # -- COLUMN 1 : IMAGE UPDATE -- #
-                img = Image.open("frontend/images/views/home/update.png")
+            if self.w_settings_label is None:
+                # -- COLUMN 1 : SETTINGS IMAGE -- #
+                img = Image.open("frontend/images/views/home/settings.png")
                 img_resize = img.resize((70, 70), Image.ANTIALIAS)
-                update_img = ImageTk.PhotoImage(img_resize)
-                self.w_update_label = Label(
+                settings_img = ImageTk.PhotoImage(img_resize)
+                self.w_settings_label = Label(
                     self.grid.col_frames[3][0],
-                    image=update_img,
+                    image=settings_img,
                     bg="#ffe399"
                 )
-                self.w_update_label.image = update_img
-                self.w_update_label.pack(fill="both", expand=True)
+                self.w_settings_label.image = settings_img
+                self.w_settings_label.pack(fill="both", expand=True)
 
-            if self.w_update_button is None:
-                # -- COLUMN 2 : UPDATE BUTTON -- #
-                self.w_update_button = Button(
+            if self.w_settings_button is None:
+                # -- COLUMN 2 : SETTINGS BUTTON -- #
+                self.w_settings_button = Button(
                     self.grid.col_frames[3][2],
                     text=txt.get("button"),
                     fg="#000000",
@@ -515,18 +514,17 @@ class Home():
                     activeforeground="#000000",
                     activebackground="#ffffff",
                     borderwidth=0,
-                    command=self.display_update
+                    command=self.display_settings
                 )
-                self.w_update_button.pack(fill="x", expand=True)
+                self.w_settings_button.pack(fill="x", expand=True)
 
         elif action == "refresh":
-            """ Refresh this row. """
 
-            self.w_update_label.pack_forget()
-            self.w_update_button.pack_forget()
+            self.w_settings_label.pack_forget()
+            self.w_settings_button.pack_forget()
 
-            self.w_update_label = None
-            self.w_update_button = None
+            self.w_settings_label = None
+            self.w_settings_button = None
 
     def row_4(self, action=None):
         """ Name : USER PROFIL
@@ -614,7 +612,6 @@ class Home():
                 self.w_user_button.pack(fill="x", expand=True)
 
         elif action == "refresh":
-            """ Refresh this row. """
 
             self.w_user_label.pack_forget()
             self.w_user_button.pack_forget()

@@ -30,8 +30,6 @@ class OffManager():
 
         self.categories = []
 
-        tmps1 = time.time()
-
         r = get(
             "https://{}.openfoodfacts.org/categories.json"
             .format(language)
@@ -52,9 +50,6 @@ class OffManager():
             else:
                 pass
 
-        tmps2 = time.time() - tmps1
-        print("Temps d'execution = %f" % tmps2)
-
     def get_products(
         self,
         language=None,
@@ -65,8 +60,6 @@ class OffManager():
             'language'    (str): language of products.
             'off_cat_id'  (str): name of category.
             'page_number' (int): number of page. """
-
-        tmps1 = time.time()
 
         self.products = []
         self.pages = 0
@@ -103,9 +96,6 @@ class OffManager():
             products_list = self.product_treatment(
                 category=category,
                 products=result["products"])
-
-        tmps2 = time.time() - tmps1
-        print("Temps d'execution = %f" % tmps2)
 
         return products_list
 
@@ -170,12 +160,14 @@ class OffManager():
                 energy_value = int(
                     product["nutriments"]["energy_100g"]
                 )
-                if energy == "kcal":
+
+                if energy.lower() == "kcal":
                     product_kj = energy_value * 4.1868
                     product_kcal = energy_value
-                elif energy == "kj":
+                elif energy.lower() == "kj":
                     product_kj = energy_value
                     product_kcal = energy_value / 4.1868
+
             except Exception as e:
                 product_kj = 0
                 product_kcal = 0
@@ -207,6 +199,8 @@ class OffManager():
                 product_dict["product_nutriscore"] = product_nutriscore
                 product_dict["product_image_url"] = product_image_url
                 product_dict["product_category_id"] = product_category_id
+                product_dict["product_kj"] = product_kj
+                product_dict["product_kcal"] = product_kcal
                 product_dict["product_sugar"] = product_sugar
                 product_dict["product_brands"] = product_brands
 

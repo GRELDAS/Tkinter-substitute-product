@@ -180,8 +180,8 @@ class ProductEdit():
         self.product_brand = self.product[0]["product_brand"]
         self.product_nutriscore = self.product[0]["product_nutriscore"]
         self.product_img_url = self.product[0]["product_img_url"]
-        # self.product_kcal = self.product[0]["product_kcal"]
-        # self.product_sugar = self.product[0]["product_sugar"]
+        self.product_kcal = self.product[0]["product_kcal"]
+        self.product_sugar = self.product[0]["product_sugar"]
         self.product_author = self.product[0]["product_creator"]
         self.product_store = self.product[0]["product_store"]
 
@@ -834,11 +834,10 @@ class ProductEdit():
 
         elif action == "refresh":
 
-            self.w_product_sugar_label.pack_forget()
             self.w_product_sugar_entry.delete(0, 1000)
             self.w_product_sugar_entry.pack_forget()
-
             self.w_product_sugar_label.pack_forget()
+            self.w_product_sugar_label = None
             self.w_product_sugar_entry = None
 
     def row_8(self, action=None):

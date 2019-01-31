@@ -13,7 +13,7 @@ from frontend.views.others.error404 import Error404
 from frontend.views.others.empty import Empty
 from frontend.views.others.home import Home
 from frontend.views.others.load import Load
-from frontend.views.others.parameters import Parameters
+from frontend.views.others.settings import Settings
 # From Program - Views - Package 'Product'
 from frontend.views.product.edit import ProductEdit
 from frontend.views.product.favorite import ProductFavorite
@@ -141,15 +141,15 @@ class Displayer():
         self.views[
             "load"
         ] = self.load
-        # 03. 'Parameters' view - Package 'Others'
-        self.parameters = Parameters(
+        # 03. 'Settings' view - Package 'Others'
+        self.settings = Settings(
             container=self.page.container,
             displayer=self,
             session=self.session
         )
         self.views[
-            "parameters"
-        ] = self.parameters
+            "settings"
+        ] = self.settings
 
         # 04. 'edit' view - Package 'Product'
         self.product_edit = ProductEdit(

@@ -92,11 +92,9 @@ class UpdateServerConn():
         self.construct()
 
     def construct(self, **kwargs):
-        """ Construt view.
-            'displayer' (Bool): to not create the view \
-                during initialization. """
+        """ Construt view. """
 
-        # 2. Create new grid in page container.
+        # 1. Create new grid in page container.
         self.grid = Grid(
             frame=self.f_container,
             width=self.width,
@@ -105,9 +103,10 @@ class UpdateServerConn():
             pady=self.pady,
             bg=self.bg
         )
-        # 3. Get view frame for displayer function
+        # 2. Get view frame for displayer function
         self.m_frame = self.grid.master_frame
 
+        # 3. Construct rows
         self.row_0(action="construct")
         self.row_1(action="construct")
         self.row_2(action="construct")
@@ -116,6 +115,7 @@ class UpdateServerConn():
         self.row_5(action="construct")
 
     def fill(self, **kwargs):
+        """ Fill rows. """
 
         # 1. Get the script.
         self.json_script = self.session.get_script(
@@ -315,6 +315,7 @@ class UpdateServerConn():
         elif action == "refresh":
 
             self.w_user_name_title.pack_forget()
+            self.w_user_name_entry.delete(0, 1000)
             self.w_user_name_entry.pack_forget()
 
             self.w_user_name_title = None
@@ -406,6 +407,7 @@ class UpdateServerConn():
         elif action == "refresh":
 
             self.w_server_pass_title.pack_forget()
+            self.w_server_pass_entry.delete(0, 1000)
             self.w_server_pass_entry.pack_forget()
 
             self.w_server_pass_title = None
@@ -495,6 +497,7 @@ class UpdateServerConn():
         elif action == "refresh":
 
             self.w_server_host_title.pack_forget()
+            self.w_server_host_entry.delete(0, 1000)
             self.w_server_host_entry.pack_forget()
 
             self.w_server_host_title = None

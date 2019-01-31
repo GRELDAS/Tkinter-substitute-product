@@ -136,6 +136,11 @@ class UpdateCategories():
                     req_type="categories",
                     language=self.language
                 )
+
+                # Initialization
+                self.page = 0
+                self.var_categories = []
+
                 for cat in self.categories:
 
                     var_category_dict = {}
@@ -568,7 +573,6 @@ class UpdateCategories():
                 w_category_product.pack(fill='both', expand=True)
 
                 var_cat = self.var_categories[count]["var_category"]
-                print(var_cat)
 
                 w_category_check = Checkbutton(
                         self.grid.col_frames[2][3],

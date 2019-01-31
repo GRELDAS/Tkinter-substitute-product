@@ -252,7 +252,6 @@ class SearchEngine():
             search_action="key",
             search_value=self.product_name
         )
-        print(self.product_name)
 
     def row_0(self, action=None):
         """ Name : TITLE

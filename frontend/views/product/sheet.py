@@ -8,7 +8,7 @@ from io import BytesIO
 # From Tkinter
 from tkinter import PhotoImage
 from tkinter import BOTTOM, X, RIGHT
-from tkinter import Label, Button
+from tkinter import Label, Button, Canvas
 # From Pillow
 from PIL import Image, ImageTk
 # From Program
@@ -72,19 +72,22 @@ class ProductSheet():
         self.w_brand_product = None
         self.w_nutriscore_product = None
         # Widgets row 2
-        self.w_update_button = None
         self.w_best_button = None
         self.w_edit_button = None
         self.w_trash_button = None
         self.w_add_button = None
+
         # Widgets row 4
+        self.canvas_calories = None
         self.w_calories_img = None
         self.w_calories_label = None
-        self.w_calories_view = None
+
         # Widgets row 5
+        self.canvas_sugar = None
         self.w_sugar_img = None
         self.w_sugar_label = None
         self.w_sugar_value = None
+
         # Widgets row 6
         self.w_stores_img = None
         self.w_stores_label = None
@@ -94,7 +97,6 @@ class ProductSheet():
         self.w_author_label = None
         self.w_author_value = None
         # Widgets row 8
-        self.w_previous_button = None
         self.w_submit_button = None
 
         self.favorite_status = False
@@ -188,8 +190,8 @@ class ProductSheet():
         self.product_name = self.product[0]["product_name"]
         self.product_brand = self.product[0]["product_brand"]
         self.product_nutriscore = self.product[0]["product_nutriscore"]
-        # self.product_kcal = self.product[0]["product_kcal"]
-        # self.product_sugar = self.product[0]["product_sugar"]
+        self.product_kcal = self.product[0]["product_kcal"]
+        self.product_sugar = self.product[0]["product_sugar"]
         self.product_author = self.product[0]["product_creator"]
         self.product_store = self.product[0]["product_store"]
 
@@ -214,14 +216,6 @@ class ProductSheet():
         self.row_6(action="fill")
         self.row_7(action="fill")
         self.fill_status = True
-
-    def display_previous(self):
-        """ Display previous view. """
-
-        self.displayer.display(
-            c_view="product_sheet",
-            f_view=self.previous_view
-        )
 
     def display_substitutes(self):
         """ Display substitues. """
@@ -248,9 +242,6 @@ class ProductSheet():
             c_view="product_sheet",
             f_view="search_engine"
         )
-
-    def update_product(self):
-        pass
 
     def add_product(self):
         """ Add product to favorite in database. """
@@ -283,7 +274,7 @@ class ProductSheet():
             product_id=self.product_id
         )
 
-        self.display_previous()
+        self.display_search()
 
     def row_0(self, action=None):
         """ Name : PRODUCT IMAGE
@@ -417,7 +408,7 @@ class ProductSheet():
             )
             # -- CREATE COLS -- #
             self.grid.column(
-                span=6,
+                span=7,
                 row=1,
                 width=None,
                 height=None,
@@ -462,7 +453,7 @@ class ProductSheet():
                 bg=None
             )
             self.grid.column(
-                span=2,
+                span=1,
                 row=1,
                 width=None,
                 height=None,
@@ -475,24 +466,6 @@ class ProductSheet():
 
             # -- COLUMN 1 : EMPTY -- #
 
-            if self.w_update_button is None:
-
-                # -- COLUMN 2 : UPDATE BUTTON -- #
-                img = Image.open(
-                    "frontend/images/views/product_sheet/update.png"
-                )
-                imgResize = img.resize((25, 25), Image.ANTIALIAS)
-                update_img = ImageTk.PhotoImage(imgResize)
-
-                self.w_update_button = Button(
-                    self.grid.col_frames[1][1],
-                    image=update_img,
-                    bg="#ffffff",
-                    command=self.update_product
-                )
-                self.w_update_button.image = update_img
-                self.w_update_button.pack(fill='both', expand=True)
-
             if self.w_best_button is None:
 
                 # -- COLUMN 3 : SUBSTITUTES BUTTON -- #
@@ -503,7 +476,7 @@ class ProductSheet():
                 best_img = ImageTk.PhotoImage(imgResize)
 
                 self.w_best_button = Button(
-                    self.grid.col_frames[1][2],
+                    self.grid.col_frames[1][1],
                     image=best_img,
                     bg="#ffffff",
                     command=self.display_substitutes
@@ -521,7 +494,7 @@ class ProductSheet():
                 edit_img = ImageTk.PhotoImage(imgResize)
 
                 self.w_edit_button = Button(
-                    self.grid.col_frames[1][3],
+                    self.grid.col_frames[1][2],
                     image=edit_img,
                     bg="#ffffff",
                     command=self.display_edit
@@ -539,7 +512,7 @@ class ProductSheet():
                 trash_img = ImageTk.PhotoImage(imgResize)
 
                 self.w_trash_button = Button(
-                    self.grid.col_frames[1][4],
+                    self.grid.col_frames[1][3],
                     image=trash_img,
                     bg="#ffffff",
                     command=self.trash_product
@@ -559,7 +532,7 @@ class ProductSheet():
                 if self.favorite_status is False:
                     # -- COLUMN 6 : ADD BUTTON -- #
                     self.w_add_button = Button(
-                        self.grid.col_frames[1][5],
+                        self.grid.col_frames[1][4],
                         image=add_img,
                         bg="#ffffff",
                         command=self.add_product
@@ -574,7 +547,7 @@ class ProductSheet():
                     add_img = ImageTk.PhotoImage(imgResize)
                     # -- COLUMN 6 : ADD BUTTON -- #
                     self.w_add_button = Button(
-                        self.grid.col_frames[1][5],
+                        self.grid.col_frames[1][4],
                         image=add_img,
                         bg="#ffffff",
                         command=self.del_product_to_favorite
@@ -584,13 +557,11 @@ class ProductSheet():
 
         elif action == "refresh":
 
-            self.w_update_button.pack_forget()
             self.w_best_button.pack_forget()
             self.w_edit_button.pack_forget()
             self.w_trash_button.pack_forget()
             self.w_add_button.pack_forget()
 
-            self.w_update_button = None
             self.w_best_button = None
             self.w_edit_button = None
             self.w_trash_button = None
@@ -631,24 +602,27 @@ class ProductSheet():
         """ Name : PRODUCT CALORIES
             cols : 3 """
 
+        line = "line_empty"
+        line_lenght = 90
+
         if self.product_kcal == 0:
-            col_span_in = 1
-            color = "#ededed"
+            line = "line_empty"
+            line_lenght = 90
         elif self.product_kcal <= 100:
-            col_span_in = 1
-            color = "#038141"
+            line = "line_a"
+            line_lenght = 90
         elif self.product_kcal <= 500:
-            col_span_in = 3
-            color = "#85bb2f"
+            line = "line_b"
+            line_lenght = 180
         elif self.product_kcal <= 1000:
-            col_span_in = 5
-            color = "#fecb02"
+            line = "line_c"
+            line_lenght = 270
         elif self.product_kcal <= 1500:
-            col_span_in = 7
-            color = "#ee8100"
+            line = "line_d"
+            line_lenght = 360
         elif self.product_kcal > 1501:
-            col_span_in = 9
-            color = "#e63e11"
+            line = "line_e"
+            line_lenght = 450
 
         if action == "construct":
 
@@ -657,7 +631,7 @@ class ProductSheet():
                 width=self.width,
                 height=55,
                 padx=0,
-                pady=10,
+                pady=5,
                 bg="#ffffff"
             )
             # -- CREATE COLS -- #
@@ -679,8 +653,8 @@ class ProductSheet():
                 pady=None,
                 bg=None
             )
-            self.grid.column(
-                span=col_span_in,
+            self.col = self.grid.column(
+                span=9,
                 row=3,
                 width=None,
                 height=None,
@@ -723,51 +697,72 @@ class ProductSheet():
                 )
                 self.w_calories_label.pack(fill="both", expand=True)
 
-            if self.w_calories_view is None:
+            if self.canvas_calories is None:
 
-                # -- COLUMN 3 : CALORIES VALUE -- #
-                self.w_calories_view = Label(
-                    self.grid.col_frames[3][2],
-                    anchor="w",
-                    text=" {} Kcal".format(self.product_kcal),
-                    pady=5,
-                    bg=color
+                img = Image.open(
+                    "frontend/images/views/product_sheet/{}.png"
+                    .format(line)
                 )
-                self.w_calories_view.pack(fill="x", expand=True)
+                imgResize = img.resize((line_lenght, 35), Image.ANTIALIAS)
+                kcal_img = ImageTk.PhotoImage(imgResize)
+
+                self.canvas_calories = Canvas(
+                    self.grid.col_frames[3][2],
+                    width=self.width,
+                    height=35,
+                    highlightthickness=0,
+                    bg="#ffffff"
+                    )
+                self.canvas_calories.pack(expand=True, fill="both")
+
+                self.canvas_calories.create_image(0, 0, image=kcal_img, anchor="nw")
+                self.canvas_calories.image = kcal_img
+
+                self.canvas_calories.create_text(
+                    5,
+                    9,
+                    text=" {} Kcal".format(self.product_kcal),
+                    anchor='nw',
+                    fill="#ffffff",
+                    font="Helvetica 10 bold")
 
         elif action == "refresh":
 
-            self.w_calories_img.pack_forget()
+            self.canvas_calories.delete("all")
+            self.canvas_calories.pack_forget()
             self.w_calories_label.pack_forget()
-            self.w_calories_view.pack_forget()
+            self.w_calories_img.pack_forget()
 
-            self.w_calories_img = None
+            self.canvas_calories = None
             self.w_calories_label = None
-            self.w_calories_view = None
+            self.w_calories_img = None
 
     def row_4(self, action=None):
         """ Name : PRODUCT SUGAR
             cols : 3 """
 
+        line = "line_empty"
+        line_lenght = 90
+
         # ----- ROW 5 : PRODUCT SUGAR ----- #
         if self.product_sugar == 0:
-            col_span_in = 1
-            color = "#ededed"
+            line = "line_empty"
+            line_lenght = 90
         elif self.product_sugar <= 10:
-            col_span_in = 1
-            color = "#038141"
+            line = "line_a"
+            line_lenght = 90
         elif self.product_sugar <= 50:
-            col_span_in = 3
-            color = "#85bb2f"
+            line = "line_b"
+            line_lenght = 180
         elif self.product_sugar <= 100:
-            col_span_in = 5
-            color = "#fecb02"
+            line = "line_c"
+            line_lenght = 270
         elif self.product_sugar <= 150:
-            col_span_in = 7
-            color = "#ee8100"
+            line = "line_d"
+            line_lenght = 360
         elif self.product_sugar > 151:
-            col_span_in = 9
-            color = "#e63e11"
+            line = "line_e"
+            line_lenght = 450
 
         if action == "construct":
 
@@ -799,7 +794,7 @@ class ProductSheet():
                 bg=None
             )
             self.grid.column(
-                span=col_span_in,
+                span=9,
                 row=4,
                 width=None,
                 height=None,
@@ -842,27 +837,46 @@ class ProductSheet():
                 )
                 self.w_sugar_label.pack(fill="both", expand=True)
 
-            if self.w_sugar_value is None:
+            if self.canvas_sugar is None:
 
-                # -- COLUMN 3 : SUGAR VALUE -- #
-                self.w_sugar_value = Label(
-                    self.grid.col_frames[4][2],
-                    anchor="w",
-                    text=" {} g".format(self.product_sugar),
-                    pady=5,
-                    bg=color
+                img = Image.open(
+                    "frontend/images/views/product_sheet/{}.png"
+                    .format(line)
                 )
-                self.w_sugar_value.pack(fill="x", expand=True)
+                imgResize = img.resize((line_lenght, 35), Image.ANTIALIAS)
+                kcal_img = ImageTk.PhotoImage(imgResize)
+
+                self.canvas_sugar = Canvas(
+                    self.grid.col_frames[4][2],
+                    width=self.width,
+                    height=35,
+                    highlightthickness=0,
+                    bg="#ffffff"
+                    )
+                self.canvas_sugar.pack(expand=True, fill="both")
+
+                self.canvas_sugar.create_image(0, 0, image=kcal_img, anchor="nw")
+                self.canvas_sugar.image = kcal_img
+
+                self.canvas_sugar.create_text(
+                    5,
+                    9,
+                    text=" {} g".format(self.product_sugar),
+                    anchor='nw',
+                    fill="#ffffff",
+                    font="Helvetica 10 bold")
 
         elif action == "refresh":
 
+            self.canvas_sugar.delete("all")
+            self.canvas_sugar.pack_forget()
+
             self.w_sugar_img.pack_forget()
             self.w_sugar_label.pack_forget()
-            self.w_sugar_value.pack_forget()
 
             self.w_sugar_img = None
             self.w_sugar_label = None
-            self.w_sugar_value = None
+            self.canvas_sugar = None
 
     def row_5(self, action=None):
         """ Name : PRODUCT STORES
@@ -1073,15 +1087,6 @@ class ProductSheet():
             )
             # -- CREATE COLS -- #
             self.grid.column(
-                span=2,
-                row=7,
-                width=None,
-                height=None,
-                padx=None,
-                pady=None,
-                bg=None
-            )
-            self.grid.column(
                 span=4,
                 row=7,
                 width=None,
@@ -1100,7 +1105,7 @@ class ProductSheet():
                 bg=None
             )
             self.grid.column(
-                span=2,
+                span=4,
                 row=7,
                 width=None,
                 height=None,
@@ -1115,24 +1120,10 @@ class ProductSheet():
             txt = self.json_script.get("row_7")
 
             # -- COLUMN 1 : EMPTY -- #
-
-            if self.w_previous_button is None:
-                # -- COLUMN 2 : SUBMIT BUTTON -- #
-                self.w_previous_button = Button(
-                    self.grid.col_frames[7][1],
-                    text=txt.get("previous_button"),
-                    fg="#ffffff",
-                    bg="#7A57EC",
-                    activeforeground="#ffffff",
-                    activebackground="#845EFF",
-                    command=self.display_previous
-                )
-                self.w_previous_button.pack(side=BOTTOM, fill=X, expand=True)
-
             if self.w_submit_button is None:
                 # -- COLUMN 3 : SUBMIT BUTTON -- #
                 self.w_submit_button = Button(
-                    self.grid.col_frames[7][2],
+                    self.grid.col_frames[7][1],
                     text=txt.get("submit_button"),
                     fg="#ffffff",
                     bg="#7A57EC",
@@ -1146,8 +1137,5 @@ class ProductSheet():
 
         elif action == "refresh":
 
-            self.w_previous_button.pack_forget()
             self.w_submit_button.pack_forget()
-
-            self.w_previous_button = None
             self.w_submit_button = None

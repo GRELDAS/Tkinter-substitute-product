@@ -22,7 +22,6 @@
     },
 
     "row_7":{
-        "previous_button": "Précédent",
         "submit_button" : "Nouvelle recherche"
     }
 }

@@ -20,7 +20,7 @@
     },
 
     "row_4":{
-        "previous_button" : "Précedent",
+        "home_button" : "Accueil",
         "submit_button" : "Valider"
     }
 }

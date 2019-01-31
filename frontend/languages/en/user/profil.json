@@ -20,7 +20,7 @@
     },
 
     "row_4":{
-        "previous_button" : "Previous",
+        "home_button" : "Home",
         "submit_button" : "Submit"
     }
 }

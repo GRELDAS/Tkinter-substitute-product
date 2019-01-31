@@ -1,4 +1,4 @@
-""" PARAMETERS
+""" SETTINGS
 PACKAGE 'OTHERS' """
 
 # -*- coding: utf-8 -*-
@@ -6,14 +6,14 @@ PACKAGE 'OTHERS' """
 import sys
 # From Tkinter
 from tkinter import BOTTOM, X
-from tkinter import Label, Button
+from tkinter import Label, Button, Canvas
 # From Pillow
 from PIL import Image, ImageTk
 # From Program
 from frontend.framework.grid import Grid
 
 
-class Parameters():
+class Settings():
     def __init__(
         self,
         container=None,
@@ -63,7 +63,7 @@ class Parameters():
         # Tk control variables
 
         # Widgets row 0
-        self.w_title = None
+        self.canvas = None
         # Widgets row 1
         self.w_delete_title = None
         self.w_delete_button = None
@@ -107,7 +107,7 @@ class Parameters():
         # 1. Get the script.
         self.json_script = self.session.get_script(
             package_name="others",
-            file_name="parameters"
+            file_name="settings"
         )
         # 2. Save name of view for displayer.
         self.name = self.json_script.get("view_name")
@@ -136,7 +136,7 @@ class Parameters():
             # -- CREATE ROW -- #
             self.grid.row(
                 width=self.width,
-                height=150,
+                height=250,
                 padx=self.padx,
                 pady=self.pady,
                 bg="#ffffff"
@@ -157,22 +157,30 @@ class Parameters():
             # Get texts for this row
             txt = self.json_script.get("row_0")
 
-            if self.w_title is None:
-                # -- COLUMN 1/1 : TITLE -- #
-                self.w_title = Label(
+            if self.canvas is None:
+
+                img = Image.open(
+                        "frontend/images/views/settings/background.jpg"
+                    )
+                imgResize = img.resize((640, 500), Image.ANTIALIAS)
+                imgTkinter = ImageTk.PhotoImage(imgResize)
+
+                self.canvas = Canvas(
                     self.grid.col_frames[0][0],
-                    padx=0,
-                    text=txt.get("view_title"),
-                    bg="#ffffff",
-                    fg="#000000",
-                    font="Helvetica 12 bold"
-                )
-                self.w_title.pack(fill="both", expand=True)
+                    width=self.width,
+                    height=250,
+                    highlightthickness=0
+                    )
+                self.canvas.pack(expand=True, fill="both")
+
+                self.canvas.create_image(0, 0, image=imgTkinter, anchor="nw")
+                self.canvas.image = imgTkinter
 
         elif action == "refresh":
-            """ Refresh this row. """
-            self.w_title.pack_forget()
-            self.w_title = None
+
+            self.canvas.delete("all")
+            self.canvas.pack_forget()
+            self.canvas = None
 
     def row_1(self, action=None):
         """ Name : DELETE PROGRAM

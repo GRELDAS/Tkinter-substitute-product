@@ -2,7 +2,7 @@
     "main_menu":{
         "label": ":::",
         "Home": "Home",
-        "parameters": "Parameters",
+        "settings": "Settings",
         "sign_out": "Sign out",
         "exit": "Exit"
     },
