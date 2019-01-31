@@ -561,7 +561,7 @@ class ProductSubstitutes():
 
                 # -- COLUMN : SUBSTITUT PRODUCT IMAGE -- #
                 if product.get("product_img_url") == "empty":
-                    img = Image.open("frontend/resources/images/no_image.png")
+                    img = Image.open("frontend/images/no_image.png")
                 else:
                     req = requests.get(product.get("product_img_url"))
                     img = Image.open(BytesIO(req.content))
