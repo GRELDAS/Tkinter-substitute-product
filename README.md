@@ -3,9 +3,9 @@
 </p>
 
 ![Python](https://img.shields.io/badge/Python-3.6-blue.svg)
-![Tkinter](https://img.shields.io/badge/Pygame-3.6-blue.svg)
+![Tkinter](https://img.shields.io/badge/Tkinter-3.6-blue.svg)
 ![Licence](https://img.shields.io/badge/Licence-GPLv3-blue.svg)
-![Status](https://img.shields.io/badge/Status-Open-green.svg)
+![Status](https://img.shields.io/badge/Status-RefactoringInProgress-orange.svg)
 ![Version](https://img.shields.io/badge/Version-1-blue.svg)
 
 > Substitute products program with Tkinter and Python.
